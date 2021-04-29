@@ -10,12 +10,13 @@
     "test:integration": "jest --config=jest-integration.config.js",
     "test:integration:watch": "jest --config=jest-integration.config.js --watchAll",
     "test:watch": "jest --watchAll",
-    "test:coverage": " test --coverage",
+    "test:coverage": " jest --coverage",
     "build": "next build",
     "start": "next start"
   },
   "dependencies": {
     "@tailwindcss/ui": "^0.6.2",
+    "axios": "^0.21.1",
     "jest": "^26.6.3",
     "next": "10.0.0",
     "react": "17.0.1",
@@ -28,7 +29,9 @@
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^13.1.5",
     "babel-jest": "^26.6.3",
+    "faker": "^5.5.3",
     "jest-dom": "^4.0.0",
+    "miragejs": "^0.1.41",
     "postcss-flexbugs-fixes": "4.2.1",
     "postcss-preset-env": "^6.7.0"
   }
