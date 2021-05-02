@@ -1,6 +1,7 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import Response from 'miragejs';
 import ProductList from '../pages';
+import userEvent from '@testing-library/user-event';
 
 import { makeServer } from '../miragejs/server';
 
@@ -57,8 +58,75 @@ describe('ProductList', () => {
     });
   });
 
-  it.todo('should render the Search component ');
-  it.todo('should render the product list when a search is performed');
-  it.todo('should render the the total quantity of products ');
-  it.todo('should render the product (singular) when there is only 1 product ');
+  it('should display the product list when a search is performed', async () => {
+    const searchTerm = 'Relogio bonito';
+
+    server.createList('product', 2);
+
+    server.create('product', {
+      title: searchTerm,
+    });
+
+    renderProductList();
+
+    await waitFor(() => {
+      expect(screen.getAllByTestId('product-card')).toHaveLength(3);
+    });
+
+    const form = screen.getByRole('form');
+    const input = screen.getByRole('searchbox');
+
+    await userEvent.type(input, searchTerm);
+    await fireEvent.submit(form);
+
+    await waitFor(() => {
+      expect(screen.getAllByTestId('product-card')).toHaveLength(1);
+    });
+  });
+
+  it('should render the the total quantity of products ', async () => {
+    server.createList('product', 10);
+
+    renderProductList();
+
+    await waitFor(() => {
+      expect(screen.getByText(/10 Products/i)).toBeInTheDocument();
+    });
+  });
+
+  it('should render the product (singular) when there is only 1 product ', async () => {
+    server.create('product', 1);
+
+    renderProductList();
+
+    await waitFor(() => {
+      expect(screen.getByText(/1 Product$/i)).toBeInTheDocument();
+    });
+  });
+
+  it('should display proper quantity when list is filtered', async () => {
+    const searchTerm = 'Relogio bonito';
+
+    server.createList('product', 2);
+
+    server.create('product', {
+      title: searchTerm,
+    });
+
+    renderProductList();
+
+    await waitFor(() => {
+      expect(screen.getByText(/3 Products/i)).toBeInTheDocument();
+    });
+
+    const form = screen.getByRole('form');
+    const input = screen.getByRole('searchbox');
+
+    await userEvent.type(input, searchTerm);
+    await fireEvent.submit(form);
+
+    await waitFor(() => {
+      expect(screen.getByText(/1 Product$/i)).toBeInTheDocument();
+    });
+  });
 });
