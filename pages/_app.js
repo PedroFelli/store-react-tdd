@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 import '../styles/globals.css';
-
+import { useCartStore } from '../store';
 import Cart from '../components/cart';
 
 if (process.env.NODE_ENV === 'development') {
@@ -8,6 +8,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 function MyApp({ Component, pageProps }) {
+  const toggle = useCartStore((store) => store.actions.toggle);
+
   return (
     <div className="bg-white">
       <header>
@@ -37,7 +39,10 @@ function MyApp({ Component, pageProps }) {
             </div>
             <div className="w-full text-gray-700 md:text-center text-2xl font-semibold">Brand</div>
             <div className="flex items-center justify-end w-full">
-              <button className="text-gray-600 focus:outline-none mx-4 sm:mx-0">
+              <button
+                onClick={() => toggle()}
+                className="text-gray-600 focus:outline-none mx-4 sm:mx-0"
+              >
                 <svg
                   className="h-5 w-5"
                   fill="none"
