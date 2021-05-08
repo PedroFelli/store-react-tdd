@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 import '../styles/globals.css';
-import { useCartStore } from '../store';
+import { useCartStore } from '../store/cart';
 import Cart from '../components/cart';
 
 if (process.env.NODE_ENV === 'development') {
